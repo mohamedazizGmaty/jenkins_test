@@ -37,6 +37,12 @@ pipeline {
                 sh 'mvn package'
             }
         }
+        stage('Build Docker Image') {
+            steps {
+                // Build the Docker image using the Dockerfile in the root directory
+                sh 'docker build -t student-management:latest .'
+            }
+        }
     }
 
     post {
