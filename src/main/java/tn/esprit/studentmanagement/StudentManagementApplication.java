@@ -1,15 +1,13 @@
 package tn.esprit.studentmanagement;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootTest
-@ActiveProfiles("test")   // 👈 pour charger application-test.properties
-class StudentManagementApplicationTests {
+@SpringBootApplication
+public class StudentManagementApplication {
 
-    @Test
-    void contextLoads() {
-        // Vérifie simplement que le contexte démarre
+    public static void main(String[] args) {
+        SpringApplication.run(StudentManagementApplication.class, args);
     }
+
 }
