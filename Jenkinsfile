@@ -43,6 +43,24 @@ pipeline {
                 sh 'docker build -t student-management:latest .'
             }
         }
+        stage('Start DB') {
+        steps {
+        sh 'docker compose -f docker-compose.test.yml up -d'
+        }
+        }
+
+        stage('Test') {
+        steps {
+        sh 'mvn test -Dspring.profiles.active=test'
+            }
+        }
+
+        stage('Stop DB') {
+    steps {
+        sh 'docker compose -f docker-compose.test.yml down'
+    }
+}
+
     }
 
     post {
