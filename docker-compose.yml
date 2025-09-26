@@ -7,7 +7,7 @@ services:
       POSTGRES_USER: student
       POSTGRES_PASSWORD: student123
     ports:
-      - "5432:5432"
+      - "5433:5433"
     volumes:
       - db_data:/var/lib/postgresql/data
   app:
@@ -15,7 +15,7 @@ services:
     ports:
       - "8089:8089"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/studentdb
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5433/studentdb
       - SPRING_DATASOURCE_USERNAME=student
       - SPRING_DATASOURCE_PASSWORD=student123
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
