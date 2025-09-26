@@ -43,10 +43,16 @@ pipeline {
                 sh 'docker build -t student-management:latest .'
             }
         }
+
         stage('Start DB') {
         steps {
         sh 'docker compose -f docker-compose.test.yml up -d'
         }
+        }
+        stage('Wait for DB') {
+            steps {
+                sh 'sleep 15'
+            }
         }
 
         stage('Test') {
