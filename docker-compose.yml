@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: studentdb
+      POSTGRES_USER: student
+      POSTGRES_PASSWORD: student123
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+  app:
+    image: student-management:latest
+    ports:
+      - "8089:8089"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/studentdb
+      - SPRING_DATASOURCE_USERNAME=student
+      - SPRING_DATASOURCE_PASSWORD=student123
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SERVER_SERVLET_CONTEXT_PATH=/student
+    depends_on:
+      - db
+    links:
+      - db
+volumes:
+  db_data:
