@@ -75,20 +75,18 @@ pipeline {
         sh 'docker compose -f docker-compose.test.yml down'
     }
          }*/
-                 stage('Push Docker Image') {
-            when {
-                branch 'main'
-            }
-            steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
-                        def app = docker.build("azizgmaty/student-management:latest")
-                        app.push()
-                        app.push("${env.BUILD_NUMBER}") // versionner avec le numéro du build
-                    }
-                }
+           stage('Push Docker Image') {
+    steps {
+        script {
+            docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
+                def app = docker.build("azizgmaty/student-management:latest")
+                app.push()
+                app.push("${env.BUILD_NUMBER}")
             }
         }
+    }
+}
+
 
 
     }
