@@ -22,10 +22,10 @@ public class DepartmentController {
     @GetMapping("/getDepartment/{id}")
     public Department getDepartment(@PathVariable Long id) { return departmentService.getDepartmentById(id); }
 
-    @PostMapping("/createDepartment")
+    @PostMapping(value = "/createDepartment", consumes = "application/json", produces = "application/json")
     public Department createDepartment(@RequestBody Department department) { return departmentService.saveDepartment(department); }
 
-    @PutMapping("/updateDepartment")
+    @PutMapping(value = "/updateDepartment", consumes = "application/json", produces = "application/json")
     public Department updateDepartment(@RequestBody Department department) {
         return departmentService.saveDepartment(department);
     }
