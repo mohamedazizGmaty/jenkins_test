@@ -75,17 +75,23 @@ pipeline {
         sh 'docker compose -f docker-compose.test.yml down'
     }
          }*/
-           stage('Push Docker Image') {
+          stage('Push Docker Image') {
     steps {
-        script {
-            docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
-                def app = docker.build("azizgmaty/student-management:latest")
-                app.push()
-                app.push("${env.BUILD_NUMBER}")
-            }
+        withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials',
+                                          usernameVariable: 'azizgmaty',
+                                          passwordVariable: 'bougabouga')]) {
+            sh """
+                echo "$bougabouga" | docker login -u "$azizgmaty" --password-stdin
+                docker tag student-management:latest azizgmaty/student-management:latest
+                docker push azizgmaty/student-management:latest
+                docker tag student-management:latest azizgmaty/student-management:${env.BUILD_NUMBER}
+                docker push azizgmaty/student-management:${env.BUILD_NUMBER}
+                docker logout
+            """
         }
     }
 }
+
 
 
 
