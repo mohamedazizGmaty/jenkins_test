@@ -35,7 +35,7 @@ pipeline {
             }
         }
 
-        stage('Start DB') {
+      /*  stage('Start DB') {
             steps {
                 sh 'docker compose -f docker-compose.test.yml up -d'
             }
@@ -74,7 +74,7 @@ pipeline {
     steps {
         sh 'docker compose -f docker-compose.test.yml down'
     }
-         }
+         }*/
                  stage('Push Docker Image') {
             when {
                 branch 'main'
