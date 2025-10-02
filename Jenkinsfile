@@ -76,17 +76,19 @@ pipeline {
     }
          }
                  stage('Push Docker Image') {
-    steps {
-        script {
-            docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
-                def app = docker.build("tonDockerHubUsername/student-management:latest")
-                app.push()
-                app.push("${env.BUILD_NUMBER}")
+            when {
+                branch 'main'
+            }
+            steps {
+                script {
+                    docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
+                        def app = docker.build("azizgmaty/student-management:latest")
+                        app.push()
+                        app.push("${env.BUILD_NUMBER}") // versionner avec le numéro du build
+                    }
+                }
             }
         }
-    }
-}
-
 
 
     }
