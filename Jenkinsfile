@@ -45,13 +45,32 @@ pipeline {
         }
 
         stage('Start DB') {
-        steps {
-        sh 'docker compose -f docker-compose.test.yml up -d'
+            steps {
+                sh 'docker compose -f docker-compose.test.yml up -d'
+            }
         }
-        }
+        
         stage('Wait for DB') {
             steps {
-                sh 'sleep 15'
+                script {
+                    // Wait for PostgreSQL to be ready using healthcheck
+                    sh '''
+                        echo "Waiting for PostgreSQL to be ready..."
+                        for i in {1..30}; do
+                            if docker compose -f docker-compose.test.yml ps --services --filter "health=healthy" | grep -q db; then
+                                echo "PostgreSQL is ready!"
+                                break
+                            elif [ $i -eq 30 ]; then
+                                echo "Timeout waiting for PostgreSQL"
+                                docker compose -f docker-compose.test.yml logs db
+                                exit 1
+                            else
+                                echo "Attempt $i/30: PostgreSQL not ready, waiting 2 seconds..."
+                                sleep 2
+                            fi
+                        done
+                    '''
+                }
             }
         }
 
